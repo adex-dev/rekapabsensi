@@ -1,0 +1,77 @@
+<!-- templates/content.html -->
+{% extends 'template.html' %}
+{% include  'navbar.html' %}
+{% block content %}
+    <style>
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .select2-selection__arrow {
+            right: 15px !important;
+        }
+    </style>
+    <div class="container mt-2">
+        {% if dataerrors == "" %}
+            <div class="mb-3 flex justify-between">
+                <form class="flex flex-col md:flex-row gap-3 btnsubmit" data-aksi="searchnik">
+                    <div class="flex">
+                        <input type="hidden" name="serialnumber" value="{{ serialnumber }}">
+                        <input required type="text" name="tanggal1" placeholder="tanggal mulai"
+                               class="w-full md:w-80 px-3 singeclock h-8 readonly rounded-l border-2 border-sky-500 focus:outline-none focus:border-sky-500"
+                        >
+                        <input required type="text" name="tanggal2" placeholder="tanggal Akhir"
+                               class="w-full md:w-80 px-3 singeclock h-8 readonly rounded-l border-2 border-sky-500 focus:outline-none focus:border-sky-500"
+                        >
+                        <label for="pricingType">&nbsp;</label><select data-allow-clear="true"
+                                                                       data-placeholder="pilih nik" required
+                                                                       id="pricingType" name="nik"
+                                                                       class="select2 mx-2 !w-full !h-10 !border-2 !border-sky-500 !focus:outline-none !focus:border-sky-500 !text-sky-500 !rounded !px-2 !md:px-3 !py-0 !md:py-1 !tracking-wider">
+                        <option value="">Pilih Nik</option>
+                        {% for vl in datanik %}
+                            <option value="{{ vl.get("emp_code") }}">{% if vl.get("first_name") %}
+                                {{ vl.get("first_name") }} {% else %} {{ vl.get("emp_code") }} {% endif %}
+                                - {{ vl.get("emp_code") }}</option>
+                        {% endfor %}
+                    </select>
+                        <button type="submit" class="bg-sky-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1 mx-2">
+                            Search
+                        </button>
+                    </div>
+
+                </form>
+                <button class="btn btn-success text-white btnclick" data-aksi="download" data-serialnumber="{{ serialnumber }}" data-nik="{{ nik }}" data-tgl1="{{ tgl1 }}" data-tgl2="{{ tgl2 }}">
+                    <i class='bx bxs-file-export'></i>
+                    Excel
+                </button>
+            </div>
+            <table id="datatables" class="display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>NIK</th>
+                    <th>NAMA</th>
+                    <th>Jam Absen</th>
+                    <th>Verify 1</th>
+                    <th>Verify 2</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for row in data %}
+                    <tr>
+                        <td><span class="cursor-pointer font-bold">{{ row.get("emp_code") }}</span></td>
+                        <td>{{ row.get("first_name") }}</td>
+                        <td>{{ row.get("punch_time") }}</td>
+                        <td>{{ row.get("punch_state") }}</td>
+                        <td>{{ row.get("verify_type") }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        {% else %}
+            <span class="text-2xl font-bold">{{ dataerrors }}</span>
+        {% endif %}
+
+    </div>
+
+{% endblock %}

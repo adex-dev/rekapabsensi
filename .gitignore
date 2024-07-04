@@ -1,0 +1,11 @@
+# Jetbrains editors (PHPStorm, etc)
+.idea/
+.venv/
+*.iml
+
+# node
+node_modules/
+flask_session/
+test/
+package-lock.json
+composer.lock
